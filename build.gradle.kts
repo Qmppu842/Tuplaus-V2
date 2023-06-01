@@ -34,6 +34,7 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-serialization:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
 }
 
 val jvmTargetCompatibility = "1.8"
@@ -46,4 +47,9 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 tasks.withType<JavaCompile>().configureEach {
     sourceCompatibility = jvmTargetCompatibility
     targetCompatibility = jvmTargetCompatibility
+}
+
+
+tasks.test {
+    useJUnitPlatform()
 }
