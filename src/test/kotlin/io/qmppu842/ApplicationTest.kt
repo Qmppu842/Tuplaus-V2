@@ -14,7 +14,7 @@ class ApplicationTest {
     fun testConfirmation() = testApplication {
         client.get("/").apply {
             assertEquals(HttpStatusCode.OK, status)
-            assertEquals("Hello World", bodyAsText())
+            assertEquals("Hello World!", bodyAsText())
         }
     }
 }
