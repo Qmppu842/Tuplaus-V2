@@ -14,23 +14,22 @@ object GameController {
         if (player.balance - bet < 0) {
             throw Exception("Too big bet")
         }
-        val winnings =
-            chooseCard(isItBig, bet)
+        val winMultiplier = chooseCard(isItBig)
+        val winnings = bet * winMultiplier
+//
+        PlayerController.updatePlayerBalance(player.identity, winnings)
 
-        PlayerController.updatePlayerBalance(player.identity, bet * winnings)
-
-        return GameEvent(playerIdentity = player.identity, bet = bet, isPlayerChoiceBig = isItBig, winnings = winnings)
+        return GameEvent(
+            playerIdentity = player.identity,
+            bet = bet,
+            isPlayerChoiceBig = isItBig,
+            winnings = winnings
+        )
     }
 
-    private fun chooseCard(isItBig: Boolean, bet: Int): Int {
+    private fun chooseCard(isItBig: Boolean): Int {
         val result = RandomHolder.rand(1, 14)
-        val winnings =
-            if ((result < 7 && !isItBig) || (result > 7 && isItBig)) {
-                bet * 2
-            } else {
-                -bet
-            }
-        return winnings
+        return if ((result < 7 && !isItBig) || (result > 7 && isItBig)) 1 else -1
     }
 
 

@@ -28,7 +28,7 @@ class GameControllerTest {
 
         //Game 1
         val gameEvent = GameController.playGame(player, 10, false)
-        assertEquals(20, gameEvent.winnings, "Winnings don't match")
+        assertEquals(10, gameEvent.winnings, "Winnings don't match")
         var newPlayer = PlayerController.getPlayer(player.identity)
         assertEquals(10010, newPlayer.balance)
 
