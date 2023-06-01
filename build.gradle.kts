@@ -35,6 +35,8 @@ dependencies {
     implementation("io.ktor:ktor-serialization:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+
+    implementation("io.ktor:ktor-server-status-pages:$ktor_version")
 }
 
 val jvmTargetCompatibility = "1.8"
