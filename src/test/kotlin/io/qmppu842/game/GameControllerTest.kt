@@ -24,7 +24,12 @@ class GameControllerTest {
         hiLoQueue.offer(true)
         hiLoQueue.offer(true)
         hiLoQueue.offer(true)
-        hiLoQueue.offer(true)//10
+        hiLoQueue.offer(true)//num 10, game 7
+        hiLoQueue.offer(false)
+        hiLoQueue.offer(true)
+        hiLoQueue.offer(false)
+        hiLoQueue.offer(true)
+        hiLoQueue.offer(false)//num 5, game 12
 
         player = PlayerController.newPlayer(newPerson())
     }
@@ -148,25 +153,61 @@ class GameControllerTest {
         val newPlayer = PlayerController.getPlayer(player.identity)
         assertEquals(10400, newPlayer.balance)
 
-        val gettedLastGame: GameEvent = GameController.getLastGameFrom(newPlayer.identity)
-
+        var gettedLastGame: GameEvent? = GameController.getLastGameFrom(newPlayer.identity)
         assertEquals(actualLastGame, gettedLastGame, "Last game was not what was expected")
+
+        //Last game when there is more than 1 player
+        GameController.playGame(PlayerController.newPlayer(newPerson()), 456, hiLoQueue.poll())
+        gettedLastGame = GameController.getLastGameFrom(newPlayer.identity)
+        assertEquals(actualLastGame, gettedLastGame)
     }
 
+
     @Test
-    fun findLastGamesMultipleUsers() {
+    fun playComboGames() {
         playSomeGames()
 
-        //Game 6
-        val actualLastGame = GameController.playGame(player, 400, hiLoQueue.poll())
-        val newPlayer = PlayerController.getPlayer(player.identity)
-        assertEquals(10400, newPlayer.balance)
+        //Game 6 & 7 & 8
+        val game1 = GameController.playGame(player, 400, hiLoQueue.poll())
+        val game2 = GameController.playGame(player, null, hiLoQueue.poll())
+        val game3 = GameController.playGame(player, null, hiLoQueue.poll())
 
-        GameController.playGame(PlayerController.newPlayer(newPerson()), 456, hiLoQueue.poll())
+        assertEquals(game1.id, game2.comboId)
+        assertEquals(game2.id, game3.comboId)
 
-        val gettedLastGame: GameEvent = GameController.getLastGameFrom(newPlayer.identity)
+        assertEquals(800, game2.bet)
+        assertEquals(1600, game3.bet)
 
-        assertEquals(actualLastGame, gettedLastGame, "Last game was not what was expected")
+        assertEquals(12800, player.balance)
+
+//        for (x in 0..10) {
+//            GameController.playGame(PlayerController.newPlayer(newPerson()), 456, false)
+//        }
+
+        //Game 9 & 10 Incorrect
+        val game4 = GameController.playGame(player, null, hiLoQueue.poll())
+        val game5 = GameController.playGame(player, null, !hiLoQueue.poll())
+
+
+
+        assertEquals(game3.id, game4.comboId)
+        assertEquals(game4.id, game5.comboId)
+
+        assertEquals(3200, game4.bet)
+        assertEquals(6400, game5.bet)
+
+
+        assertEquals(9600, player.balance)
+
+        //Game 11 Incorrect
+        var didCatch = false
+        try {
+            GameController.playGame(player, null, !hiLoQueue.poll())
+        } catch (e: Exception) {
+            didCatch = true
+        }
+        assertTrue(didCatch, "Combo game was allowed even after loss")
+
     }
 
 }

@@ -9,10 +9,14 @@ object GameController {
     private val gameHistory = ArrayList<GameEvent>(100)
 
 
-    fun playGame(player: PlayerData, bet: Int?, isItBig: Boolean): GameEvent {
+    fun playGame(player: PlayerData, playersBet: Int?, isItBig: Boolean): GameEvent {
+        var bet = playersBet
+        var comboId = -1
         if (bet == null) {
-
-            TODO("to implement the combo system")
+            val lastGame = getLastGameFrom(player.identity) ?: throw Exception("Player has yet to play any games")
+            if (lastGame.winnings < 1) throw Exception("Try winning bigger to be able to combo")
+            bet = lastGame.bet + lastGame.winnings
+            comboId = lastGame.id
         }
         if (player.balance - bet < 0) {
             throw Exception("Too big bet")
@@ -34,7 +38,8 @@ object GameController {
             bet = bet,
             isPlayerChoiceBig = isItBig,
             endCard = result,
-            winnings = winnings
+            winnings = winnings,
+            comboId = comboId
         )
         gameHistory.add(ge)
 
@@ -46,15 +51,19 @@ object GameController {
         return gameHistory
     }
 
-    fun getLastGameFrom(identity: String): GameEvent {
+    fun getLastGameFrom(identity: String): GameEvent? {
         return getAllGames().mapNotNull {
             if (it.playerIdentity == identity) {
                 it
             } else {
                 null
             }
-        }.maxBy { it.timestamp; it.id }
+        }.maxByOrNull { it.timestamp; it.id }
         // huh, there actually shouldn't be any case where timestamps outperform id alone
+    }
+
+    fun printGames() {
+        gameHistory.forEach { println(it) }
     }
 
 
