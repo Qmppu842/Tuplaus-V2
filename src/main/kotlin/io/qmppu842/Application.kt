@@ -15,21 +15,13 @@ fun main(args: Array<String>): Unit = EngineMain.main(args)
 fun Application.module() {
     install(StatusPages) {
         exception<Throwable> { call, cause ->
-//            println("cause = ${cause}")
             val split = cause.toString().split(":")
-//            println("split.first() = ${split.first()}")
-//            println("split.last() = ${split.last()}")
-
             try {
                 val code = HttpStatusCode(split[1].trim().toInt(), split.last())
-                println("code = ${code}")
                 call.respond(code)
             } catch (e: Exception) {
                 println(e.message)
                 call.respondText(text = "500: $cause", status = HttpStatusCode.InternalServerError)
-            }
-            if (split.size > 2) {
-            } else {
             }
         }
     }
