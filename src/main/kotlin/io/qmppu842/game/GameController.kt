@@ -4,7 +4,6 @@ import io.ktor.util.date.*
 import io.qmppu842.RandomHolder
 import io.qmppu842.player.PlayerController
 import io.qmppu842.player.PlayerData
-import kotlin.random.Random
 
 object GameController {
     private val gameHistory = ArrayList<GameEvent>(100)
