@@ -13,16 +13,16 @@ object GameController {
         var bet = playersBet
         var comboId = -1
         if (bet == null) {
-            val lastGame = getLastGameFrom(player.identity) ?: throw Exception("Player has yet to play any games")
-            if (lastGame.winnings < 1) throw Exception("Try winning bigger to be able to combo")
+            val lastGame = getLastGameFrom(player.identity) ?: throw Exception("500:Player has yet to play any games")
+            if (lastGame.winnings < 1) throw Exception("500:Try winning bigger to be able to combo")
             bet = lastGame.bet + lastGame.winnings
             comboId = lastGame.id
         }
         if (player.balance - bet < 0) {
-            throw Exception("Too big bet")
+            throw Exception("400:Too big bet")
         }
         if (bet < 0) {
-            throw Exception("Too small bet")
+            throw Exception("400:Too small bet")
         }
 
         val result = RandomHolder.rand(1, 14)

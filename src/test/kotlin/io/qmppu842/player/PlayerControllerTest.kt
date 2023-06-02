@@ -24,7 +24,7 @@ class PlayerControllerTest {
 
         assertEquals(playersSize + 1, PlayerController.getAllPlayers().size, "No player was added")
 
-        val savedPlayerData = PlayerController.getPlayer(newPlayer.identity)
+        val savedPlayerData = PlayerController.getPlayerByIdentity(newPlayer.identity)
 
         assertEquals(savedPlayerData, newPlayer, "Saved one was not same as created one")
     }
@@ -46,7 +46,7 @@ class PlayerControllerTest {
         val playerData = PlayerController.newPlayer(newPerson(), 1000)
 
         PlayerController.updatePlayerBalance(playerData.identity, 1000)
-        var newPlayer = PlayerController.getPlayer(playerData.identity)
+        var newPlayer = PlayerController.getPlayerByIdentity(playerData.identity)
 
         assertEquals(2000, newPlayer.balance)
 
@@ -54,7 +54,7 @@ class PlayerControllerTest {
 
         try {
             PlayerController.updatePlayerBalance(playerData.identity, -4000)
-            newPlayer = PlayerController.getPlayer(playerData.identity)
+            newPlayer = PlayerController.getPlayerByIdentity(playerData.identity)
         } catch (e: Exception) {
             result = true
         }
@@ -62,7 +62,7 @@ class PlayerControllerTest {
         assertTrue(result)
 
         PlayerController.updatePlayerBalance(playerData.identity, -2000)
-        newPlayer = PlayerController.getPlayer(playerData.identity)
+        newPlayer = PlayerController.getPlayerByIdentity(playerData.identity)
 
         assertEquals(0, newPlayer.balance)
     }

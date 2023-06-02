@@ -46,29 +46,29 @@ class GameControllerTest {
         val gameEvent = GameController.playGame(player, 10, hiLoQueue.poll())
         assertEquals(8, gameEvent.endCard, "Argh, just go read the Sec Randoms and match'em up")
         assertEquals(10, gameEvent.winnings, "Winnings don't match")
-        var newPlayer = PlayerController.getPlayer(player.identity)
+        var newPlayer = PlayerController.getPlayerByIdentity(player.identity)
         assertEquals(10010, newPlayer.balance)
         assertEquals(gameEvents + 1, GameController.getAllGames().size)
 
         //Game 2
         GameController.playGame(player, 350, hiLoQueue.poll())
-        newPlayer = PlayerController.getPlayer(player.identity)
+        newPlayer = PlayerController.getPlayerByIdentity(player.identity)
         assertEquals(10360, newPlayer.balance)
         assertEquals(gameEvents + 2, GameController.getAllGames().size)
 
         //Game 3 Incorrect
         GameController.playGame(player, 150, !hiLoQueue.poll())
-        newPlayer = PlayerController.getPlayer(player.identity)
+        newPlayer = PlayerController.getPlayerByIdentity(player.identity)
         assertEquals(10210, newPlayer.balance)
 
         //Game 4 Incorrect
         GameController.playGame(player, 10, !hiLoQueue.poll())
-        newPlayer = PlayerController.getPlayer(player.identity)
+        newPlayer = PlayerController.getPlayerByIdentity(player.identity)
         assertEquals(10200, newPlayer.balance)
 
         //Game 5 Incorrect
         GameController.playGame(player, 200, !hiLoQueue.poll())
-        newPlayer = PlayerController.getPlayer(player.identity)
+        newPlayer = PlayerController.getPlayerByIdentity(player.identity)
         assertEquals(10000, newPlayer.balance)
     }
 
@@ -78,7 +78,7 @@ class GameControllerTest {
         //Game 1
         val gameEvent = GameController.playGame(player, 10, hiLoQueue.poll())
         assertEquals(10, gameEvent.winnings, "Winnings don't match")
-        var newPlayer = PlayerController.getPlayer(player.identity)
+        var newPlayer = PlayerController.getPlayerByIdentity(player.identity)
         assertEquals(10010, newPlayer.balance)
 
         var didCatch = false
@@ -94,7 +94,7 @@ class GameControllerTest {
 
         //Game 2 Incorrect
         GameController.playGame(player, 10010, !hiLoQueue.poll())
-        newPlayer = PlayerController.getPlayer(player.identity)
+        newPlayer = PlayerController.getPlayerByIdentity(player.identity)
         assertEquals(0, newPlayer.balance)
 
 
@@ -106,7 +106,7 @@ class GameControllerTest {
             didCatch = true
         }
 
-        newPlayer = PlayerController.getPlayer(player.identity)
+        newPlayer = PlayerController.getPlayerByIdentity(player.identity)
         assertEquals(0, newPlayer.balance)
         assertTrue(didCatch, "No exception with too big but winning bet")
     }
@@ -117,7 +117,7 @@ class GameControllerTest {
         //Game 1
         val gameEvent = GameController.playGame(player, 10, hiLoQueue.poll())
         assertEquals(10, gameEvent.winnings, "Winnings don't match")
-        var newPlayer = PlayerController.getPlayer(player.identity)
+        var newPlayer = PlayerController.getPlayerByIdentity(player.identity)
         assertEquals(10010, newPlayer.balance)
 
         var didCatch = false
@@ -128,7 +128,7 @@ class GameControllerTest {
             didCatch = true
         }
 
-        newPlayer = PlayerController.getPlayer(player.identity)
+        newPlayer = PlayerController.getPlayerByIdentity(player.identity)
         assertEquals(10010, newPlayer.balance)
         assertTrue(didCatch, "No exception with negative bet with losing game")
 
@@ -139,7 +139,7 @@ class GameControllerTest {
             didCatch = true
         }
 
-        newPlayer = PlayerController.getPlayer(player.identity)
+        newPlayer = PlayerController.getPlayerByIdentity(player.identity)
         assertEquals(10010, newPlayer.balance)
         assertTrue(didCatch, "No exception with negative bet with winning game")
     }
@@ -150,7 +150,7 @@ class GameControllerTest {
 
         //Game 6
         val actualLastGame = GameController.playGame(player, 400, hiLoQueue.poll())
-        val newPlayer = PlayerController.getPlayer(player.identity)
+        val newPlayer = PlayerController.getPlayerByIdentity(player.identity)
         assertEquals(10400, newPlayer.balance)
 
         var gettedLastGame: GameEvent? = GameController.getLastGameFrom(newPlayer.identity)
