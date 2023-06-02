@@ -25,7 +25,6 @@ class PlayerApplicationTest {
             )
         }
         val bodyText = response.bodyAsText()
-        println("bodyText = ${bodyText}")
         assertEquals(36, bodyText.length)
         assertEquals(HttpStatusCode.Created, response.status)
     }

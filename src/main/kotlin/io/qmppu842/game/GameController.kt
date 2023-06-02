@@ -9,6 +9,10 @@ object GameController {
     private val gameHistory = ArrayList<GameEvent>(100)
 
 
+    fun playGame(playerIdent: String, playersBet: Int?, isItBig: Boolean): GameEvent {
+        return playGame(PlayerController.getPlayerByIdentity(playerIdent), playersBet, isItBig)
+    }
+
     fun playGame(player: PlayerData, playersBet: Int?, isItBig: Boolean): GameEvent {
         var bet = playersBet
         var comboId = -1
@@ -59,7 +63,7 @@ object GameController {
                 null
             }
         }.maxByOrNull { it.timestamp; it.id }
-        // huh, there actually shouldn't be any case where timestamps outperform id alone
+        // huh, there actually shouldn't be any case where timestamps outperforms id alone
     }
 
     fun printGames() {

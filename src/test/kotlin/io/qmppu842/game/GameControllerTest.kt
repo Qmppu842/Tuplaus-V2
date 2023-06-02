@@ -13,7 +13,7 @@ import java.util.*
 class GameControllerTest {
 
     private lateinit var player: PlayerData
-    val hiLoQueue = LinkedList<Boolean>()
+    private val hiLoQueue = LinkedList<Boolean>()
 
     @BeforeEach
     fun setUp() {
@@ -145,7 +145,7 @@ class GameControllerTest {
     }
 
     @Test
-    fun findLastGames() {
+    internal fun findLastGames() {
         playSomeGames()
 
         //Game 6
