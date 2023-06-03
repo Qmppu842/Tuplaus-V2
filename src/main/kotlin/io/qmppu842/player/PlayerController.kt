@@ -10,10 +10,16 @@ object PlayerController {
 
         val player = PlayerData(UUID.randomUUID().toString(), name, balance)
         players[player.identity] = player
+        printPlayers()
         return player
     }
 
-    fun getPlayerByIdentity(identity: String): PlayerData = players[identity] ?: throw Exception("500:No player found")
+    fun getPlayerByIdentity(identity: String): PlayerData {
+//        printPlayers()
+//
+//        println("identity = ${identity}")
+        return players[identity] ?: throw Exception("500:No player found")
+    }
 
     fun getAllPlayers(): List<PlayerData> {
         return players.values.toList()

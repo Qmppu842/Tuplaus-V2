@@ -5,6 +5,6 @@ import java.util.concurrent.atomic.AtomicInteger
 private var id: AtomicInteger = AtomicInteger(0)
 
 fun newPerson(): String {
-    return "Tester ${id.getAndIncrement()}"
+    return "Tester_${id.getAndIncrement()}"
 }
 

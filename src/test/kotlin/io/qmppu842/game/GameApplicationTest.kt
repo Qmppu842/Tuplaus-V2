@@ -49,7 +49,7 @@ class GameApplicationTest {
             contentType(ContentType.Application.Json)
             setBody(
                 "{\n" +
-                        "  \"name\": \"$playerName\",\n" +
+                        "  \"name\": $playerName,\n" +
                         "  \"balance\": $playerBalance\n" +
                         "}"
             )
@@ -67,7 +67,7 @@ class GameApplicationTest {
             contentType(ContentType.Application.Json)
             setBody(
                 "{\n" +
-                        "  \"identity\": \"${player.identity}\",\n" +
+                        "  \"identity\": ${player.identity},\n" +
                         "  \"playersBet\": $betAmount,\n" +
                         "  \"isItBig\": ${hiLoQueue.poll()}\n" +
                         "}"
@@ -116,9 +116,9 @@ class GameApplicationTest {
     }
 
 
-
     @Test
     fun playSomeBrokenGames() = testApplication {
+        makePlayer()
         var betAmount = 399
         val response = client.post("/playGame") {
             contentType(ContentType.Application.Json)
@@ -159,7 +159,7 @@ class GameApplicationTest {
         makePlayer()
 
         var betAmount = 399
-        val response = client.post("/combo") {
+        val response = client.post("/playGame") {
             contentType(ContentType.Application.Json)
             setBody(
                 "{\n" +
@@ -169,9 +169,8 @@ class GameApplicationTest {
                         "}"
             )
         }
-        val ge: GameEvent = response.body()
-
-        assertEquals(betAmount, ge.winnings)
+        val ge = Json.parseToJsonElement(response.bodyAsText()).jsonObject
+        assertEquals(betAmount, ge["winnings"].toString().toInt())
         assertEquals(HttpStatusCode.OK, response.status)
 
 
@@ -186,10 +185,11 @@ class GameApplicationTest {
                         "}"
             )
         }
-        val ge2: GameEvent = response.body()
 
-        assertEquals(ge.id, ge2.comboId)
-        assertEquals(HttpStatusCode.OK, response2.status)
+        val ge2 = Json.parseToJsonElement(response2.bodyAsText()).jsonObject
+        assertEquals(betAmount, ge2["winnings"].toString().toInt())
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals(ge["id"], ge2["comboId"])
 
 
         //        Game 3
@@ -203,13 +203,13 @@ class GameApplicationTest {
                         "}"
             )
         }
-        val ge3: GameEvent = response.body()
-
-        assertEquals(ge2.id, ge3.comboId)
-        assertEquals(HttpStatusCode.OK, response3.status)
+        val ge3 = Json.parseToJsonElement(response3.bodyAsText()).jsonObject
+        assertEquals(-betAmount, ge3["winnings"].toString().toInt())
+        assertEquals(HttpStatusCode.OK, response.status)
+        assertEquals(ge2["id"], ge3["comboId"])
 
         betAmount *= 2
-        val response4 = client.post("/combo") {
+        client.post("/combo") {
             contentType(ContentType.Application.Json)
             setBody(
                 "{\n" +
@@ -218,14 +218,12 @@ class GameApplicationTest {
                         "}"
             )
         }
-//        val ge4: GameEvent = response.body()
-
-//        assertEquals(-betAmount, ge4.winnings)
-        assertEquals(HttpStatusCode.OK, response4.status)
+        assertEquals(HttpStatusCode(500, "Try winning bigger to be able to combo"), response.status)
     }
 
     @Test
     fun playSomeBrokenComboGames() = testApplication {
+        makePlayer()
         val response = client.post("/combo") {
             contentType(ContentType.Application.Json)
             setBody(

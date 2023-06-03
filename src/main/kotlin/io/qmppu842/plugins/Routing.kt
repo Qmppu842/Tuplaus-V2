@@ -58,7 +58,9 @@ fun Application.configureRouting() {
                 throw Exception("400:Missing information")
             } else {
                 val ge = GameController.playGame(
-                    json["identity"].toString(), null, json["isItBig"].toString().toBooleanStrict()
+                    json["identity"].toString(),
+                    null,
+                    json["isItBig"].toString().toBooleanStrict()
                 )
                 call.respond(ge)
             }
