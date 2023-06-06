@@ -1,18 +1,18 @@
-# Tuplaus sever
+# Tuplaus Server
 
 ## To run
 One needs legs, sorry.  
 So the legs:  
-For normal running: gradle run  
-For tests: gradle test
-And to mutate the test: gradle pitest  
-All these should be used in the root dict.
-
+For normal running: `gradle run`    
+For tests: `gradle test`  
+And to mutate the test: `gradle pitest`   
+All these should be used in the root folder.  
+Test results then go on to live in build/reports/tests folder
 
 
 ## TODO:
-- [x] 1: Suunnittele ja dokumentoi peli-clientin ja pelimoottorin välinen HTTP-rajapinta 
-- [] 2: Suunnittele ja toteuta tietokanta pelimoottorille
+- [x] 1: Suunnittele ja dokumentoi peli-clientin ja pelimoottorin välinen HTTP-rajapinta  
+- [ ] 2: Suunnittele ja toteuta tietokanta pelimoottorille
 - [x] 3: Toteuta pelimoottori
 - [x] 4: Tee järjestelmälle testit
 - [x] 5: Kirjoita ohjeet pelimoottorin ja testien ajamiseen
